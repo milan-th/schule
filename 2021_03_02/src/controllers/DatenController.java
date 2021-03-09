@@ -11,9 +11,11 @@ import javafx.scene.input.MouseEvent;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.FileNotFoundException;
 
 
 public class DatenController{
+
     MitarbeiterDatenbank datenbank = new MitarbeiterDatenbank();
 
     @FXML
@@ -28,6 +30,9 @@ public class DatenController{
 
     public ComboBox<String> mitarbeiterCombobox;
     public TextArea ausgabeTextfield;
+
+    public DatenController() throws FileNotFoundException {
+    }
 
     public void onClickDateneingabe(MouseEvent actionEvent) { //Wenn Button in Dateneingabe Tab gedrückt wird
         idTextField.setText(idTextField.getText().trim());
@@ -167,5 +172,4 @@ public class DatenController{
             }
         }
     }
-
 }
