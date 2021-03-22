@@ -9,9 +9,8 @@ import backend.Mitarbeiter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.util.ArrayList;
 
 
 public class DatenController{
@@ -34,21 +33,33 @@ public class DatenController{
     public DatenController() throws FileNotFoundException {
     }
 
-    public void onClickDateneingabe(MouseEvent actionEvent) { //Wenn Button in Dateneingabe Tab gedrückt wird
+    public void initialize(){ //Wird direkt nach Programmstart ausgeführt --> setzt die Daten aus existierenden Dateien in beide Combobox fest
+        for (int i = 0; i < datenbank.getAlleMitarbeiter().size(); i++) {
+            mitarbeiterAufgCombobox.getItems().add(datenbank.getAlleMitarbeiter().get(i).getId() + " - " +datenbank.getAlleMitarbeiter().get(i).getVorname() + " " + datenbank.getAlleMitarbeiter().get(i).getName());
+            mitarbeiterCombobox.getItems().add(datenbank.getAlleMitarbeiter().get(i).getId() + " - " +datenbank.getAlleMitarbeiter().get(i).getVorname() + " " + datenbank.getAlleMitarbeiter().get(i).getName());
+        }
+    }
+
+    public void onClickDateneingabe(MouseEvent actionEvent) throws IOException { //Wenn Button in Dateneingabe Tab gedrückt wird
         idTextField.setText(idTextField.getText().trim());
         if(!idTextField.getText().isEmpty() && !vornameTextField.getText().isEmpty() && !nachnameTextField.getText().isEmpty()){
             if (idTextField.getLength() == 4) {
                 System.out.println("Neuer Mitarbeiter");
                 Mitarbeiter neuerMitarbeiter = new Mitarbeiter(idTextField.getText(), vornameTextField.getText(), nachnameTextField.getText());
-                datenbank.setAlleMitarbeiter(neuerMitarbeiter);
-                idTextField.clear();
-                vornameTextField.clear();
-                nachnameTextField.clear();
-                mitarbeiterAufgCombobox.getItems().add(datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getId() + " - " +datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getVorname() + " " + datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getName());
-                mitarbeiterCombobox.getItems().add(datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getId() + " - " +datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getVorname() + " " + datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getName());
-                System.out.println(datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getId());
-                System.out.println(datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getVorname());
-                System.out.println(datenbank.getAlleMitarbeiter().get((datenbank.getMitarbeiterAnzahl()-1)).getName());
+                if (datenbank.setAlleMitarbeiter(neuerMitarbeiter)) {
+                    idTextField.clear();
+                    vornameTextField.clear();
+                    nachnameTextField.clear();
+                    mitarbeiterAufgCombobox.getItems().add(datenbank.getAlleMitarbeiter().get((datenbank.getAlleMitarbeiter().size() - 1)).getId() + " - " + datenbank.getAlleMitarbeiter().get((datenbank.getAlleMitarbeiter().size() - 1)).getVorname() + " " + datenbank.getAlleMitarbeiter().get((datenbank.getAlleMitarbeiter().size() - 1)).getName());
+                    mitarbeiterCombobox.getItems().add(datenbank.getAlleMitarbeiter().get((datenbank.getAlleMitarbeiter().size() - 1)).getId() + " - " + datenbank.getAlleMitarbeiter().get((datenbank.getAlleMitarbeiter().size() - 1)).getVorname() + " " + datenbank.getAlleMitarbeiter().get((datenbank.getAlleMitarbeiter().size() - 1)).getName());
+                }else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Error Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Mitarbeiter ID existiert bereits!");
+
+                    alert.showAndWait();
+                }
             }else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Error Dialog");
@@ -73,7 +84,7 @@ public class DatenController{
             System.out.println("Neue Aufgabe");
             try {
                 String idTemp = mitarbeiterAufgCombobox.getValue().substring(0, 4);
-                for (int i = 0; i < datenbank.getMitarbeiterAnzahl(); i++) {
+                for (int i = 0; i < datenbank.getAlleMitarbeiter().size(); i++) {
                     if (datenbank.getAlleMitarbeiter().get(i).getId().equals(idTemp)){
                         datenbank.getAlleMitarbeiter().get(i).setMeineAufgaben(new Aufgabe(bezeichungTextField.getText(), datumTextField.getText(), uhrzeitTextField.getText(), datenbank.getAlleMitarbeiter().get(i)));
                         success = true;
@@ -170,6 +181,48 @@ public class DatenController{
 
                 alert.showAndWait();
             }
+        }
+    }
+
+    public void onClickDelete(MouseEvent mouseEvent) throws IOException {
+        String idTemp = mitarbeiterCombobox.getValue().substring(0, 4);
+        boolean success = false;
+        ausgabeTextfield.clear();
+        for (int i = 0; i < datenbank.getAlleMitarbeiter().size(); i++) {
+            if (datenbank.getAlleMitarbeiter().get(i).getId().equals(idTemp)){
+                success = true;
+                File fileToDelete = new File("C:\\Users\\Milan\\IdeaProjects\\schule\\2021_03_02\\src\\storage\\" + idTemp + ".txt");
+                if(fileToDelete.delete()){
+                    System.out.println("Delete");
+                }
+                BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Milan\\IdeaProjects\\schule\\2021_03_02\\src\\storage\\MitarbeiterSpeicher.txt"));
+                String s = "";
+                ArrayList<String> tempListMitarbeiterFile = new ArrayList<>();
+                while ((s = br.readLine()) != null){
+                    if(!s.equals(idTemp)){
+                        tempListMitarbeiterFile.add(s);
+                        System.out.println(s);
+                        //TODO Bugfix: Wenn Mitarbeiter aus der Mitte einer Dreier Liste gelöscht wird die Liste eine Lücke haben. Bug findet schon in der Erstellung der Arrayliste statt
+                    }
+                }
+                br.close();
+                BufferedWriter bw = new BufferedWriter(new FileWriter("C:\\Users\\Milan\\IdeaProjects\\schule\\2021_03_02\\src\\storage\\MitarbeiterSpeicher.txt"));
+                for (int j = 0; j < tempListMitarbeiterFile.size(); j++) {
+                    System.out.println(tempListMitarbeiterFile.get(j));
+                    bw.append(tempListMitarbeiterFile.get(j));
+                    bw.newLine();
+
+                }
+                bw.close();
+            }
+        }
+        if (!success){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("ID nicht gefunden");
+
+            alert.showAndWait();
         }
     }
 }

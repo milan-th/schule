@@ -160,14 +160,14 @@
                            <children>
                               <GridPane hgap="35.0" layoutY="17.0" prefHeight="74.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="17.0">
                                 <columnConstraints>
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="296.6666564941406" minWidth="10.0" prefWidth="263.3333435058594" />
+                                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="296.6666564941406" minWidth="10.0" prefWidth="263.3333435058594" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="350.0" minWidth="10.0" prefWidth="336.6666564941406" />
                                 </columnConstraints>
                                 <rowConstraints>
                                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
-                                    <Label prefHeight="36.0" prefWidth="230.0" text="Ausgabe Aufgaben">
+                                    <Label prefHeight="71.0" prefWidth="230.0" text="Ausgabe Aufgaben">
                                        <font>
                                           <Font size="25.0" />
                                        </font>
@@ -190,15 +190,25 @@
                         </AnchorPane>
                         <AnchorPane prefHeight="290.0" prefWidth="600.0">
                            <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </padding>
                            <children>
                               <TextArea fx:id="ausgabeTextfield" editable="false" layoutX="121.0" layoutY="39.0" prefHeight="290.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <Button layoutX="511.0" layoutY="269.0" mnemonicParsing="false" onMouseClicked="#onClickDelete" prefHeight="25.0" prefWidth="58.0" text="Löschen">
+                                 <padding>
+                                    <Insets left="-20.0" right="-20.0" />
+                                 </padding>
+                              </Button>
                            </children>
                         </AnchorPane>
                      </children>
                   </VBox>
                </children></AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Untitled Tab">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
         </content>
       </Tab>
   </tabs>
