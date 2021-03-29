@@ -7,11 +7,17 @@ public class Mitarbeiter {
     private String vorname;
     private String name;
     private ArrayList<Aufgabe> meineAufgaben = new ArrayList<>();
+    FileManagement fileManagement = new FileManagement();
+
+    public Mitarbeiter(String id){
+        this.id = id;
+    }
 
     public Mitarbeiter(String id, String vorname, String name) {
         this.id = id;
         this.vorname = vorname;
         this.name = name;
+
     }
 
     public String getId() {
