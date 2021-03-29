@@ -37,6 +37,7 @@ public class FussballStart {
                 System.out.println("-----------------------------------------------");
 
             } else if (option == 't') {
+                System.out.println("-----------------------------------------------");
                 System.out.print("Welches Team möchten Sie trainieren, 1 oder 2: ");
                 option = scanner.next().charAt(0);
                 if (option == '1') {
@@ -46,11 +47,13 @@ public class FussballStart {
                 } else {
                     System.out.println("Fehler beim Trainieren (Auswahl)");
                 }
+                System.out.println("-----------------------------------------------");
 
             } else if (option == 's') {
                 match.spielen();
 
             } else if (option == 'm') {
+                System.out.println("-----------------------------------------------");
                 System.out.println("Willst du einen Spieler [K]aufen oder [V]erkaufen?");
                 option = Character.toLowerCase(scanner.next().charAt(0));
                 System.out.println("Für welches Team, 1 oder 2: ");
@@ -60,6 +63,7 @@ public class FussballStart {
                 } else if (option == 'v'){
                     match.getTeams((x-1)).setSpielstaerke(-1);
                 }
+                System.out.println("-----------------------------------------------");
 
             } else if (option == 'e') {
                 break;
