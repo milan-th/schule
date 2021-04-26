@@ -58,10 +58,10 @@ public class FussballStart {
                 option = Character.toLowerCase(scanner.next().charAt(0));
                 System.out.println("Für welches Team, 1 oder 2: ");
                 int x = Integer.parseInt(scanner.next());
-                if (option == 'k'){
-                    match.getTeams((x-1)).setSpielstaerke(1);
-                } else if (option == 'v'){
-                    match.getTeams((x-1)).setSpielstaerke(-1);
+                if (option == 'k') {
+                    match.getTeams((x - 1)).setSpielstaerke(1);
+                } else if (option == 'v') {
+                    match.getTeams((x - 1)).setSpielstaerke(-1);
                 }
                 System.out.println("-----------------------------------------------");
 
@@ -71,7 +71,7 @@ public class FussballStart {
             } else {
                 System.out.println("Fehler bei Auswahl im Menü");
             }
-        }while (true);
+        } while (true);
         System.out.println("Programmende");
     }
 }
